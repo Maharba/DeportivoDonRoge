@@ -16,6 +16,8 @@ h1 {
     font-size: 87px;
     font-family: 'Squada One', cursive;
     text-shadow: 1px 1px 25px #000, 1px 1px 15px #000, 1px 1px 15px #000, 1px 1px 15px #000;
+    -webkit-text-shadow: 1px 1px 25px #000, 1px 1px 15px #000, 1px 1px 15px #000, 1px 1px 15px #000;
+    -moz-text-shadow: 1px 1px 25px #000, 1px 1px 15px #000, 1px 1px 15px #000, 1px 1px 15px #000;
     
     
 }
@@ -24,4 +26,6 @@ h2 {
     text-align: right;
     font-family: 'Signika', sans-serif;
     text-shadow: 1px 1px 25px #000, 1px 1px 15px #000;
+    -webkit-text-shadow: 1px 1px 25px #000, 1px 1px 15px #000;
+    -moz-text-shadow: 1px 1px 25px #000, 1px 1px 15px #000;
 }
