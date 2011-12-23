@@ -1,0 +1,15 @@
+﻿@{
+    Page.Title = "Hola Mundo";
+    Layout = "shared/_MainLayout.cshtml";
+}
+
+@section head {
+    <link href="@Href("~/styles/main.css")" rel="stylesheet" />
+    <link href='http://fonts.googleapis.com/css?family=Squada+One' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Signika' rel='stylesheet' type='text/css'>
+}
+<div id="coming-soon">
+    <img src="@Href("~/images/logo.png")" alt="Logo Deportivo Don Roge" />
+    <h1>Deportivo Don Roge</h1>
+    <h2>Próximamente</h2>
+</div>

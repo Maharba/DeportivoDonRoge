@@ -1,0 +1,40 @@
+﻿@{
+    Page.Title = "Partidos";
+    Layout = "shared/_MainLayout.cshtml";
+
+    var db = Database.Open("DeportivoDonRogeDB");
+    var query = db.Query("SELECT Jugadores.ID_Equipo, Nombre, Amonestaciones FROM Jugadores INNER JOIN JugadoresPartidos ON Jugadores.ID_Equipo = JugadoresPartidos.ID_Equipo AND Jugadores.Numero = JugadoresPartidos.Numero_Jugador" );
+    var queryEquiposString = "SELECT * FROM Equipos WHERE ID=@0";
+    
+    //var queryEquipos = db.Query("SELECT * FROM Equipos WHERE ID=@0");
+    //var queryCompeticion = db.Query("SELECT * FROM Competiciones WHERE ID=@0");
+}
+
+@section head {
+    
+}
+
+<table border="1" cellpadding="1" cellspacing="1">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Equipo</th>
+            <th>Goles</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in query)
+        {
+            <tr>
+                <td>@row.Nombre</td>
+                <td>
+                    @{var resultEquipo = db.Query(queryEquiposString, @row.ID_Equipo);}
+                    @resultEquipo[0].Nombre
+                </td>
+                <td>
+                    @row.Goles_Anotados
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

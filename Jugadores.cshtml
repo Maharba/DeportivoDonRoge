@@ -1,0 +1,48 @@
+﻿@{
+    Page.Title = "Jugadores";
+    Layout = "shared/_MainLayout.cshtml";
+
+    var db = Database.Open("DeportivoDonRogeDB");
+    var query = db.Query("SELECT * FROM Jugadores");
+    var queryEquiposString = "SELECT * FROM Equipos WHERE ID=@0";
+    
+}
+
+@section head {
+    
+}
+
+<table border="1" cellpadding="1" cellspacing="1">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Equipo</th>
+            <th>Número</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Fecha de Nacimiento</th>
+            <th>Ciudad</th>
+            <th>Posición</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in query)
+        {
+            <tr>
+                <td> <a href=@Href("~/EditarJugador", row.ID_Equipo, row.Numero)>Editar</a></td>
+                <td>
+                    @{
+                        var resultEquipo = db.Query(queryEquiposString, row.ID_Equipo);
+                    }
+                    @resultEquipo[0].Nombre
+                </td>
+                <td>@row.Numero</td>
+                <td>@row.Nombre</td>
+                <td>@row.Apellidos</td>
+                <td>@row.FechaNacimiento.ToShortDateString()</td>
+                <td>@row.Ciudad</td>
+                <td>@row.Posicion</td>
+            </tr>
+        }
+    </tbody>
+</table>

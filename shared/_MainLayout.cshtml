@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>@Page.Title</title>
+        @RenderSection("head", required: false)
+    </head>
+    <body>
+        <header>
+            @RenderSection("header", required:false)
+        </header>
+        <div id="main-wrapper">
+            @RenderBody()
+        </div>
+        <footer>
+            @RenderSection("footer", required:false)
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,46 @@
+﻿@{
+    Page.Title = "Partidos";
+    Layout = "shared/_MainLayout.cshtml";
+
+    var db = Database.Open("DeportivoDonRogeDB");
+    var query = db.Query("SELECT * FROM Partidos");
+
+    //var queryEquipos = db.Query("SELECT * FROM Equipos WHERE ID=@0");
+    //var queryCompeticion = db.Query("SELECT * FROM Competiciones WHERE ID=@0");
+}
+
+@section head {
+    
+}
+
+<table border="1" cellpadding="1" cellspacing="1">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Fecha</th>
+            <th>Local</th>
+            <th>Visitante</th>
+            <th>Competición</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in query)
+        {
+            <tr>
+                <td><a href=@Href("~/EditarPartido", row.ID)>Editar</a></td>
+                <td>@row.Fecha</td>
+                <td>
+                    @{ var resultEquipo = db.Query("SELECT * FROM Equipos WHERE ID=@0", row.ID_Equipo_Local); }
+                    @resultEquipo[0].Nombre
+                </td>
+                <td>
+                    @{ var resultEquipo2 = db.Query("SELECT * FROM Equipos WHERE ID=@0", row.ID_Equipo_Visitante); }
+                    @resultEquipo2[0].Nombre
+                </td>
+                <td>
+                @{ var resultCompeticion = db.Query("SELECT * FROM Competiciones WHERE ID=@0", row.ID_Competicion); }
+                @resultCompeticion[0].Nombre</td>
+            </tr>
+        }
+    </tbody>
+</table>

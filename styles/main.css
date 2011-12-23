@@ -1,0 +1,27 @@
+﻿body 
+{
+    background: url(../images/background.png) #000;
+}
+#coming-soon {
+    margin: 100px auto;
+    width: 720px;
+}
+img {
+    margin: 0 auto;
+    display: block;
+}
+h1 {
+    color: #FFD910;
+    text-align: center;
+    font-size: 87px;
+    font-family: 'Squada One', cursive;
+    text-shadow: 1px 1px 25px #000, 1px 1px 15px #000, 1px 1px 15px #000, 1px 1px 15px #000;
+    
+    
+}
+h2 {
+    color: #f1f1f1;
+    text-align: right;
+    font-family: 'Signika', sans-serif;
+    text-shadow: 1px 1px 25px #000, 1px 1px 15px #000;
+}

@@ -1,0 +1,29 @@
+﻿@{
+    Page.Title = "Equipos";
+    Layout = "shared/_MainLayout.cshtml";
+
+    var db = Database.Open("DeportivoDonRogeDB");
+    var query = db.Query("SELECT * FROM Equipos");
+}
+
+@section head {
+    
+}
+
+<table border="1" cellpadding="1" cellspacing="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in query)
+        {
+            <tr>
+                <td> <a href=@Href("~/UpdateEquipos", row.ID)>Editar</a></td>
+                <td>@row.Nombre</td>
+            </tr>
+        }
+    </tbody>
+</table>

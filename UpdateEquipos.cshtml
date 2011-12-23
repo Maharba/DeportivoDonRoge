@@ -1,0 +1,47 @@
+﻿@{
+    Page.Title = "Equipos";
+    Layout = "shared/_MainLayout.cshtml";
+    
+    var db = Database.Open("DeportivoDonRogeDB");
+    var selectedQuery = "SELECT * FROM Equipos WHERE ID=@0";
+
+    var EquipoID = UrlData[0];
+
+    if (EquipoID.IsEmpty())
+    {
+        Response.Redirect(Href("~/Equipos"));
+    }
+
+    var row = db.QuerySingle(selectedQuery, EquipoID);
+
+    var Nombre = row.Nombre;
+
+    if (IsPost)
+    {
+        Nombre = Request["Nombre"];
+        if (string.IsNullOrWhiteSpace(Nombre))
+        {
+            ModelState.AddError("Nombre", "El Nombre es requerido.");
+        }
+
+        if (ModelState.IsValid)
+        {
+            var updateQuery = "UPDATE Equipos SET Nombre=@0 WHERE ID=@1";
+            db.Execute(updateQuery, Nombre, EquipoID);
+            Response.Redirect("~/Equipos");
+        }
+    }
+}
+
+<form action="" method="post">
+    <fieldset>
+        <legend>Editar Equipo</legend>
+        <div>
+            <label>Nombre:</label>
+            <input type="text" name="Nombre" value="@Nombre" />
+        </div>
+        <div>
+            <input type="submit" name="Actualizar" value="Guardar" />
+        </div>
+    </fieldset>
+</form>

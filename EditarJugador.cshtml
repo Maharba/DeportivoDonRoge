@@ -1,0 +1,120 @@
+﻿@{
+    Page.Title = "Equipos";
+    Layout = "shared/_MainLayout.cshtml";
+    
+    var db = Database.Open("DeportivoDonRogeDB");
+    var selectedQuery = "SELECT * FROM Jugadores WHERE ID_Equipo=@0 AND Numero=@1";
+    var queryEquiposString = "SELECT * FROM Equipos";
+    
+    var EquipoID = UrlData[0];
+    var JugadorID = UrlData[1];
+    if (EquipoID.IsEmpty() || JugadorID.IsEmpty())
+    {
+        Response.Redirect(Href("~/Jugadores"));
+    }
+
+    var row = db.QuerySingle(selectedQuery, EquipoID, JugadorID);
+    
+    
+    
+    var IDEquipo = row.ID_Equipo;
+    var Numero = row.Numero;
+    var Nombre = row.Nombre;
+    var Apellidos = row.Apellidos;
+    var FechaNacimiento = row.FechaNacimiento;
+    var Ciudad = row.Ciudad;
+    var Posicion = row.Posicion;
+
+    // Todavía sin modificarse
+    if (IsPost)
+    {
+        Nombre = Request["Nombre"];
+        IDEquipo = Request["Equipo"];
+        Numero = Request["Numero"];
+        Apellidos = Request["Apellidos"];
+        FechaNacimiento = string.Format("{0}-{1}-{2}", Request["DiaNacimiento"], Request["MesNacimiento"], Request["AñoNacimiento"]);
+        Ciudad = Request["Ciudad"];
+        Posicion = Request["Posicion"];
+        
+        if (string.IsNullOrWhiteSpace(Nombre))
+        {
+            ModelState.AddError("Nombre", "El Nombre es requerido.");
+        }
+        if (string.IsNullOrWhiteSpace(Numero))
+        {
+            ModelState.AddError("Numero", "El Numero es requerido.");
+        }
+        if (string.IsNullOrWhiteSpace(Apellidos))
+        {
+            ModelState.AddError("Apellidos", "Los Apellidos son requeridos.");
+        }
+        if (string.IsNullOrWhiteSpace(FechaNacimiento) || FechaNacimiento == "--")
+        {
+            ModelState.AddError("FechaNacimiento", "La Fecha de Nacimiento es requerida.");
+        }
+        
+        if (ModelState.IsValid)
+        {
+            var updateQuery = "UPDATE Jugadores SET Nombre=@0, Numero=@1, Apellidos=@2, FechaNacimiento=@3, Ciudad=@4, Posicion=@5, ID_Equipo=@6 WHERE ID_Equipo=@7 AND Numero=@8";
+            db.Execute(updateQuery, Nombre, Numero, Apellidos, FechaNacimiento, Ciudad, Posicion, IDEquipo, IDEquipo, Numero);
+            Response.Redirect("~/Jugadores");
+        }
+    }
+}
+
+@Html.ValidationSummary("Se produjeron los siguientes errores:")
+
+<form action="" method="post">
+    <fieldset>
+        <legend>Editar Jugador</legend>
+        <div>
+            <label>Nombre:</label>
+            <input type="text" name="Nombre" value="@Nombre" />
+            
+            <label>Equipo:</label>
+            <select name="Equipo">
+                @{
+                        var resultEquipo = db.Query(queryEquiposString);
+                }
+                @foreach (var rowEquipo in resultEquipo)
+                {
+                    // Ver que pedo aquí... para mostrar el equipo del jugador
+                    <option value=@rowEquipo.ID @{if (@rowEquipo.ID == row.ID_Equipo)
+                                                {
+                                                    var valor = " selected";
+                                                      @valor;
+                                                }}>@rowEquipo.Nombre</option>
+                }
+            </select>
+
+            <label>Número</label>
+            <input type="text" name="Numero" value="@Numero" />
+
+            <label>Apellidos:</label>
+            <input type="text" name="Apellidos" value="@Apellidos" />
+
+            <fieldset>
+                <legend>Fecha de Nacimiento</legend>
+
+                <label>Día</label>
+                <input type="text" name="DiaNacimiento" value="@FechaNacimiento.Day" />
+
+                <label>Mes</label>
+                <input type="text" name="MesNacimiento" value="@FechaNacimiento.Month" />
+
+                <label>Año</label>
+                <input type="text" name="AñoNacimiento" value="@FechaNacimiento.Year" />
+            </fieldset>
+
+            <label>Ciudad</label>
+            <input type="text" name="Ciudad" value="@Ciudad" />
+
+            <label>Posición</label>
+            <input type="text" name="Posicion" value="@Posicion" />
+
+        </div>
+        <div>
+            <input type="submit" name="Actualizar" value="Guardar" />
+        </div>
+    </fieldset>
+</form>
